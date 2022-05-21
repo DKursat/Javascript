@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFO Killer</title>
+    <style>
+        canvas {
+            background-color: grey;
+        }
+    </style>
+
+    <script>
+        let KEY_SPACE = false;//32
+        let KEY_UP = false;//38
+        let KEY_DOWN = false;//40
+        let canvas;
+        let ctx;
+        let backgroundimage = new Image();
+
+        let rocket = {
+            x: 30,
+            y: 200,
+            width: 150,
+            height: 80,
+            src: 'img/player.png'
+        };
+        let enemys = [];
+
+        document.onkeydown = function (e) {
+            console.log(e.keyCode);
+            if (e.keyCode == 32) {//Leertaste gedrückt
+                KEY_SPACE = true;
+            }
+            if (e.keyCode == 38) {//Pfeiltaste hoch gedrückt
+                KEY_UP = true;
+            }
+            if (e.keyCode == 40) {//Pfeiltaste runter gedrückt
+                KEY_DOWN = true;
+            }
+
+        }
+        document.onkeyup = function (e) {
+            console.log(e.keyCode);
+            if (e.keyCode == 32) {
+                KEY_SPACE = false;
+            }
+            if (e.keyCode == 38) {
+                KEY_UP = false;
+            }
+            if (e.keyCode == 40) {
+                KEY_DOWN = false;
+            }
+        }
+        function startGame() {
+            canvas = document.getElementById('canvas');
+            ctx = canvas.getContext('2d');
+            loadimages();
+            setInterval(update, 1000 / 25);
+            setInterval(createenemy, 5000);
+            setInterval(checkCollion, 1000 / 25);
+            draw();
+        }
+
+        function checkCollion() {
+            enemys.forEach(function (enemy) {
+                if(rocket.x + rocket.width > enemy.x 
+                && rocket.y + rocket.height > enemy.y
+                &&rocket.x < enemy.x
+                &&rocket.y < enemy.y
+                ){
+                    rocket.img.src='img/boom.png';
+                    console.log('Collion!!!!');
+                    enemys = enemys.filter(u => u != enemy);
+                }
+
+            });
+
+        }
+
+        function createenemy() {
+            let enemy = {
+                x: 800,
+                y: 200,
+                width: 100,
+                height: 40,
+                src: 'img/enemy.png',
+                img: new Image()
+            };
+            enemy.img.src = enemy.src;
+            enemys.push(enemy);
+
+        }
+
+        function update() {
+
+            if (KEY_UP) {
+
+                rocket.y -= 4;
+
+            }
+            if (KEY_DOWN) {
+
+                rocket.y += 4;
+
+            }
+            enemys.forEach(function (enemy) {
+                enemy.x -= 5;
+            });
+        }
+
+
+        function loadimages() {
+            backgroundimage.src = 'img/background.jpg';
+
+            rocket.img = new Image();
+            rocket.img.src = rocket.src;
+
+        }
+
+
+
+        function draw() {
+
+            ctx.drawImage(backgroundimage, 0, 0);
+            ctx.drawImage(rocket.img, rocket.x, rocket.y, rocket.width, rocket.height);
+            enemys.forEach(function (enemy) {
+                ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
+
+
+            });
+            requestAnimationFrame(draw);
+        }
+
+    </script>
+</head>
+
+<body onload="startGame()">
+    <canvas id="canvas" width="720" height="480"></canvas>
+</body>
+
+</html>
