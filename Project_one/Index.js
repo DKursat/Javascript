@@ -26,7 +26,7 @@ function addTodo() {
 
 function gelöscht() {
   
-    Liste.innerHTML = " " ;
+  Test.innerHTML = "Es funktioniert" ;
 
     console.log("Funktioniert!");
   }
