@@ -18,7 +18,6 @@ function addTodo() {
 
 </li>
   `;
-
   console.log(Inhalt);
   todofield.value = "";
   Inhalt.value ="";
@@ -26,7 +25,7 @@ function addTodo() {
 
 function gelöscht() {
   
-  Test.innerHTML = "Es funktioniert" ;
+  todolist.innerHTML = "";
 
     console.log("Funktioniert!");
   }
